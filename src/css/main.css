@@ -4,6 +4,7 @@
   --color-primary-dark: #e68a00;
   --color-primary-light: #ffb340;
   --color-border: #ccc;
+  --color-secondary: #f0f0f0;
 
   /* Cores de texto */
   --color-text-primary: #2e2e2e;
@@ -13,7 +14,6 @@
   /* Cores de fundo */
   --color-background: #f0f0f0;
   --color-background-white: #ffffff;
-  --color-background-light: #fafafa;
 
   /* Cores de estado */
   --color-error: #ff4444;
