@@ -1,7 +1,7 @@
 <template>
   <button
     class="form-button__content"
-    :class="{ 'form-button__content--secondary' : secondary }"
+    :class="computedClass"
     @click="handleClick"
   >
     {{ text }}
@@ -9,8 +9,9 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 
-defineProps({
+const props = defineProps({
   text: {
     type: String,
     required: true
@@ -18,12 +19,28 @@ defineProps({
   secondary: {
     type: Boolean,
     default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 
-const emit = defineEmits(['click']);
+const emit = defineEmits(['click', 'disabled-click']);
+
+const computedClass = computed(() => {
+  if (props.secondary) return 'form-button__content--secondary';
+  if (props.disabled) return 'form-button__content--disabled';
+
+  return '';
+});
 
 function handleClick() {
+  if (props.disabled) {
+    emit('disabled-click');
+    return;
+  }
+
   emit('click');
 }
 
@@ -33,6 +50,7 @@ function handleClick() {
 
 .form-button {
   font-size: 14px;
+  width: 100%;
   padding: var(--spacing-md);
   border-radius: var(--spacing-sm);
   font-weight: bold;
@@ -46,9 +64,15 @@ function handleClick() {
 
     &--secondary {
       @extend .form-button;
-      background: var(--color-secondary);
-      color: var(--color-text-primary);
-      border: 1px solid var(--color-border);
+      background: white;
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+
+    &--disabled {
+      @extend .form-button__content;
+      background: var(--color-primary-light);
+      cursor: not-allowed;
     }
   }
 }
