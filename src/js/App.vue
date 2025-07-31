@@ -97,6 +97,7 @@ function handleCanAdvance(value) {
 <style lang="scss" scoped>
 
 .register-form {
+  margin-top: 20%;
   width: 350px;
   background: white;
   padding: var(--spacing-xxl) var(--spacing-xl);
