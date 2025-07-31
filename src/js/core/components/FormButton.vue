@@ -14,14 +14,14 @@
 
 .form-button {
   font-size: 14px;
-  padding: 12px;
-  border-radius: 8px;
+  padding: var(--spacing-md);
+  border-radius: var(--spacing-sm);
   font-weight: bold;
   border: none;
 
   &__content {
     @extend .form-button;
-    background-color: #ff9900;
+    background-color: var(--color-primary);
     color: white;
   }
 }

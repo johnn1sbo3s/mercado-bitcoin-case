@@ -57,27 +57,27 @@ defineProps({
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
-  color: #2e2e2e;
+  gap: var(--spacing-xs);
+  color: var(--color-text-primary);
   font-size: 14px;
   font-weight: 550;
 
   &__label {
     display: flex;
-    gap: 4px;
+    gap: var(--spacing-xs);
     align-items: center;
   }
 
   &__required {
-    color: #ff0000;
+    color: var(--color-error);
   }
 
   &__field {
-    font-size: 15px;
+    font-size: 14px;
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
     box-sizing: border-box;
   }
 }

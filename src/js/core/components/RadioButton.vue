@@ -46,15 +46,15 @@ function handleClick(value) {
     background: white;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-md);
 
     &__item {
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 12px;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-md);
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: var(--border-radius-md);
       width: 100%;
       cursor: pointer;
     }
@@ -63,8 +63,8 @@ function handleClick(value) {
 input[type="radio"] {
   cursor: pointer;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: var(--spacing-lg);
+  height: var(--spacing-lg);
   border: 1px solid #ccc;
   border-radius: 100%;
   position: relative;
@@ -72,8 +72,8 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked {
-  accent-color: #ff9900;
-  border-color: #ff9900;
+  accent-color: var(--color-primary);
+  border-color: var(--color-primary);
   background-color: white;
 }
 
@@ -86,12 +86,12 @@ input[type="radio"]:checked::after {
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  background-color: #ff9900;
+  background-color: var(--color-primary);
 }
 
 label {
   font-size: 14px;
-  color: #2e2e2e;
+  color: var(--color-text-primary);
   cursor: pointer;
 }
 

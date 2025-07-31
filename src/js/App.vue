@@ -48,28 +48,27 @@ const steps = [
 .register-form {
   width: 350px;
   background: white;
-  padding: 24px;
-  border-radius: 12px;
-  min-height: 300px;
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  border-radius: var(--spacing-md);
 
   &__header {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--spacing-xs);
   }
 
   &__step-info {
     display: flex;
     align-items: flex-end;
-    gap: 4px;
+    gap: var(--spacing-xs);
 
     &--active {
-      color: #ff9900;
+      color: var(--color-primary);
     }
   }
 
   &__step-content {
-    margin: 16px 0;
+    margin: var(--spacing-xl) 0;
     width: 100%;
     height: 100%;
   }
