@@ -9,7 +9,7 @@
       <input
         type="radio"
         :value="option.id"
-        :checked="selectedOption === option.id"
+        :checked="model === option.id"
       >
 
       <label class="radio-button__label">
@@ -20,7 +20,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+
+const model = defineModel({
+  type: String,
+  default: ''
+});
 
 defineProps({
   options: {
@@ -29,13 +33,8 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['change']);
-
-const selectedOption = ref('');
-
 function handleClick(value) {
-  selectedOption.value = value;
-  emit('change', selectedOption.value);
+  model.value = value;
 }
 
 </script>
