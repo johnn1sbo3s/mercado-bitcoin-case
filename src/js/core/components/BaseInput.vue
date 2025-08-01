@@ -24,13 +24,18 @@
 </template>
 
 <script setup>
+import { watch } from 'vue';
+import { formatCpf } from '../../utils/formatters/cpf';
+import { formatEmail } from '../../utils/formatters/email';
+import { formatDate } from '../../utils/formatters/date';
+import { formatPhone } from '../../utils/formatters/phone';
 
 const model = defineModel({
   type: String,
   required: true
 });
 
-defineProps({
+const props = defineProps({
   label: {
     type: String,
     required: true,
@@ -46,8 +51,43 @@ defineProps({
   required: {
     type: Boolean,
     default: false
+  },
+  formatter: {
+    type: String,
+    default: ''
   }
 });
+
+watch(model, (newValue) => {
+  if (!props.formatter) return;
+
+  runValidation(newValue);
+});
+
+function runValidation(value) {
+  if (!props.formatter) return true;
+
+  if (props.formatter === 'cpf') {
+    model.value = formatCpf(value);
+    return;
+  }
+
+  if (props.formatter === 'email') {
+    model.value = value.replace(' ', '');
+    model.value = formatEmail(model.value);
+    return;
+  }
+
+  if (props.formatter === 'date') {
+    model.value = formatDate(value);
+    return;
+  }
+
+  if (props.formatter === 'phone') {
+    model.value = formatPhone(value);
+    return;
+  }
+}
 
 </script>
 
