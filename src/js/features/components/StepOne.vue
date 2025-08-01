@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, computed } from 'vue';
+import { ref, watchEffect, computed, onMounted } from 'vue';
 import BaseInput from '../../core/components/BaseInput.vue';
 import RadioButton from '../../core/components/RadioButton.vue';
 
@@ -25,10 +25,6 @@ const model = defineModel({
   type: Object,
   required: true,
 });
-
-if (!model.value['step-one']) {
-  model.value['step-one'] = {};
-}
 
 const emit = defineEmits(['can-advance']);
 
@@ -58,6 +54,12 @@ const accountTypeIsValid = computed(() => {
 
 const isStepValid = computed(() => {
   return emailIsValid.value && accountTypeIsValid.value;
+});
+
+onMounted(() => {
+  if (!model.value['step-one']) {
+    model.value['step-one'] = {};
+  }
 });
 
 watchEffect(() => {
