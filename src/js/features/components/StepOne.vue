@@ -5,6 +5,7 @@
       label="Endereço de e-mail"
       type="email"
       placeholder="nome@exemplo.com"
+      formatter="email"
       required
     />
 
@@ -20,6 +21,7 @@
 import { ref, watchEffect, computed, onMounted } from 'vue';
 import BaseInput from '../../core/components/BaseInput.vue';
 import RadioButton from '../../core/components/RadioButton.vue';
+import { validateEmail } from '../../utils/validators/email';
 
 const model = defineModel({
   type: Object,
@@ -42,18 +44,8 @@ const accountOptions = [
 const email = ref(model.value['step-one']?.email || '');
 const accountType = ref(model.value['step-one']?.accountType || '');
 
-const emailIsValid = computed(() => {
-  return email.value.length > 0
-    && email.value.includes('@')
-    && email.value.includes('.com');
-});
-
-const accountTypeIsValid = computed(() => {
-  return accountType.value !== '';
-});
-
 const isStepValid = computed(() => {
-  return emailIsValid.value && accountTypeIsValid.value;
+  return validateEmail(email.value) && accountType.value !== '';
 });
 
 onMounted(() => {
@@ -70,11 +62,6 @@ watchEffect(() => {
   if (!model.value['step-one']) return;
 
   model.value['step-one'].email = email.value.trim();
-});
-
-watchEffect(() => {
-  if (!model.value['step-one']) return;
-
   model.value['step-one'].accountType = accountType.value;
 });
 

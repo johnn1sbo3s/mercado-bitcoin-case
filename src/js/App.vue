@@ -36,7 +36,6 @@
           @disabled-click="handleDisabledClick"
         />
       </div>
-      {{ showPreviousButton }}
 
       <span
         v-if="showErrorMessage"
@@ -52,7 +51,7 @@
 <script setup>
 import { ref } from 'vue';
 import StepOne from './features/components/StepOne.vue';
-import StepTwo from './features/components/StepTwo.vue';
+import StepPf from './features/components/StepPf.vue';
 import FormButton from './core/components/FormButton.vue';
 
 const form = ref({});
@@ -67,7 +66,7 @@ const steps = [
   },
   {
     title: 'Step Two',
-    component: StepTwo,
+    component: StepPf,
   }
 ];
 

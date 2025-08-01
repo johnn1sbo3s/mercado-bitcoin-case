@@ -20,6 +20,13 @@
       :type="type"
       :required="required"
     >
+
+    <div
+      v-if="errorMessage"
+      class="base-input__error"
+    >
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
@@ -55,6 +62,10 @@ const props = defineProps({
   formatter: {
     type: String,
     default: ''
+  },
+  errorMessage: {
+    type: String,
+    default: ''
   }
 });
 
@@ -69,6 +80,7 @@ function runValidation(value) {
 
   if (props.formatter === 'cpf') {
     model.value = formatCpf(value);
+
     return;
   }
 
@@ -119,6 +131,12 @@ function runValidation(value) {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
     box-sizing: border-box;
+  }
+
+  &__error {
+    font-size: 12px;
+    font-weight: 550;
+    color: var(--color-error);
   }
 }
 
