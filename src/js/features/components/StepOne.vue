@@ -44,14 +44,24 @@ const accountOptions = [
 const email = ref(model.value['step-one']?.email || '');
 const accountType = ref(model.value['step-one']?.accountType || '');
 
+const emailErrorMsg = ref('');
+
 const isStepValid = computed(() => {
-  return validateEmail(email.value) && accountType.value !== '';
+  return validateEmail(email.value)
+    && accountOptions.map(({ id }) => id).includes(accountType.value);
 });
 
 onMounted(() => {
   if (!model.value['step-one']) {
     model.value['step-one'] = {};
   }
+});
+
+
+watchEffect(() => {
+  if (email.value?.length) {
+    emailErrorMsg.value = validateEmail ? 'Endereço de e-mail inválido' : '';
+  } else emailErrorMsg.value = '';
 });
 
 watchEffect(() => {
