@@ -78,23 +78,26 @@ onMounted(() => {
 watchEffect(() => {
   if (socialName.value?.length) {
     socialNameErrorMsg.value = socialName.value.length < 3 ? 'Nome inválido' : '';
-  }
+  }else socialNameErrorMsg.value = '';
+
   if (cnpj.value?.length) {
     cnpjErrorMsg.value = validateCnpj(cnpj.value) ? '' : 'CNPJ inválido';
-  }
+  } else cnpjErrorMsg.value = '';
+
   if (openingDate.value?.length) {
     openingDateErrorMsg.value = validateDate(openingDate.value) ? '' : 'Data inválida';
-  }
+  } else openingDateErrorMsg.value = '';
+
   if (phone.value?.length) {
     phoneErrorMsg.value = validatePhone(phone.value) ? '' : 'Telefone inválido';
-  }
+  } else phoneErrorMsg.value = '';
 });
 
 watchEffect(() => {
   if (!model.value['step-pj']) return;
 
   model.value['step-pj'].socialName = socialName.value;
-  model.value['step-pj'].cpf = cnpj.value;
+  model.value['step-pj'].cnpj = cnpj.value;
   model.value['step-pj'].openingDate = openingDate.value;
   model.value['step-pj'].phone = phone.value;
 });

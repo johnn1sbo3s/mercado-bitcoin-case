@@ -35,7 +35,6 @@
       :error-message="phoneErrorMsg"
       required
     />
-    {{ isStepValid }}
   </div>
 </template>
 
@@ -79,16 +78,19 @@ onMounted(() => {
 watchEffect(() => {
   if (name.value?.length) {
     nameErrorMsg.value = name.value.length < 3 ? 'Nome inválido' : '';
-  }
+  } else nameErrorMsg.value = '';
+
   if (cpf.value?.length) {
     cpfErrorMsg.value = validateCpf(cpf.value) ? '' : 'CPF inválido';
-  }
+  } else cpfErrorMsg.value = '';
+
   if (birthDate.value?.length) {
     birthDateErrorMsg.value = validateDate(birthDate.value) ? '' : 'Data inválida';
-  }
+  } else birthDateErrorMsg.value = '';
+
   if (phone.value?.length) {
     phoneErrorMsg.value = validatePhone(phone.value) ? '' : 'Telefone inválido';
-  }
+  } else phoneErrorMsg.value = '';
 });
 
 watchEffect(() => {
