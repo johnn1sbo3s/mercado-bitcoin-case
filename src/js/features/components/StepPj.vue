@@ -1,29 +1,29 @@
 <template>
   <div class="step-pj">
     <BaseInput
-      v-model="socialName"
+      v-model="name"
       label="Razão social"
       type="text"
       placeholder="Razão social"
-      :error-message="nameErrorMsg"
+      :error-message="errorMessages.name"
       required
     />
 
     <BaseInput
-      v-model="cnpj"
+      v-model="identifier"
       label="CNPJ"
       placeholder="Apenas números"
       formatter="cnpj"
-      :error-message="cnpjErrorMsg"
+      :error-message="errorMessages.identifier"
       required
     />
 
     <BaseInput
-      v-model="openingDate"
+      v-model="referenceDate"
       label="Data de abertura"
       placeholder="Ex.: 15/10/2000"
       formatter="date"
-      :error-message="openingDateErrorMsg"
+      :error-message="errorMessages.referenceDate"
       required
     />
 
@@ -32,7 +32,7 @@
       label="Telefone"
       placeholder="Apenas números (com DDD)"
       formatter="phone"
-      :error-message="phoneErrorMsg"
+      :error-message="errorMessages.phone"
       required
     />
   </div>
@@ -52,20 +52,22 @@ const model = defineModel({
 
 const emit = defineEmits(['can-advance']);
 
-const socialName = ref(model.value['step-pj']?.socialName || '');
-const cnpj = ref(model.value['step-pj']?.cnpj || '');
-const openingDate = ref(model.value['step-pj']?.openingDate || '');
+const name = ref(model.value['step-pj']?.name || '');
+const identifier = ref(model.value['step-pj']?.identifier || '');
+const referenceDate = ref(model.value['step-pj']?.referenceDate || '');
 const phone = ref(model.value['step-pj']?.phone || '');
 
-const socialNameErrorMsg = ref('');
-const cnpjErrorMsg = ref('');
-const openingDateErrorMsg = ref('');
-const phoneErrorMsg = ref('');
+const errorMessages = ref({
+  name: '',
+  identifier: '',
+  referenceDate: '',
+  phone: '',
+});
 
 const isStepValid = computed(() => {
-  return socialName.value.length > 3
-    && validateCnpj(cnpj.value)
-    && validateDate(openingDate.value)
+  return name.value.length > 3
+    && validateCnpj(identifier.value)
+    && validateDate(referenceDate.value)
     && validatePhone(phone.value);
 });
 
@@ -76,29 +78,29 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (socialName.value?.length) {
-    socialNameErrorMsg.value = socialName.value.length < 3 ? 'Nome inválido' : '';
-  }else socialNameErrorMsg.value = '';
+  if (name.value?.length) {
+    errorMessages.value.name = name.value.length < 3 ? 'Nome inválido' : '';
+  }else errorMessages.value.name = '';
 
-  if (cnpj.value?.length) {
-    cnpjErrorMsg.value = validateCnpj(cnpj.value) ? '' : 'CNPJ inválido';
-  } else cnpjErrorMsg.value = '';
+  if (identifier.value?.length) {
+    errorMessages.value.identifier = validateCnpj(identifier.value) ? '' : 'CNPJ inválido';
+  } else errorMessages.value.identifier = '';
 
-  if (openingDate.value?.length) {
-    openingDateErrorMsg.value = validateDate(openingDate.value) ? '' : 'Data inválida';
-  } else openingDateErrorMsg.value = '';
+  if (referenceDate.value?.length) {
+    errorMessages.value.referenceDate = validateDate(referenceDate.value) ? '' : 'Data inválida';
+  } else errorMessages.value.referenceDate = '';
 
   if (phone.value?.length) {
-    phoneErrorMsg.value = validatePhone(phone.value) ? '' : 'Telefone inválido';
-  } else phoneErrorMsg.value = '';
+    errorMessages.value.phone = validatePhone(phone.value) ? '' : 'Telefone inválido';
+  } else errorMessages.value.phone = '';
 });
 
 watchEffect(() => {
   if (!model.value['step-pj']) return;
 
-  model.value['step-pj'].socialName = socialName.value;
-  model.value['step-pj'].cnpj = cnpj.value;
-  model.value['step-pj'].openingDate = openingDate.value;
+  model.value['step-pj'].name = name.value;
+  model.value['step-pj'].identifier = identifier.value;
+  model.value['step-pj'].referenceDate = referenceDate.value;
   model.value['step-pj'].phone = phone.value;
 });
 

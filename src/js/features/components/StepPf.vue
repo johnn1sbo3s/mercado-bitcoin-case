@@ -5,25 +5,25 @@
       label="Nome"
       type="text"
       placeholder="Seu nome completo"
-      :error-message="nameErrorMsg"
+      :error-message="errorMessages.name"
       required
     />
 
     <BaseInput
-      v-model="cpf"
+      v-model="identifier"
       label="CPF"
       placeholder="Apenas números"
       formatter="cpf"
-      :error-message="cpfErrorMsg"
+      :error-message="errorMessages.identifier"
       required
     />
 
     <BaseInput
-      v-model="birthDate"
+      v-model="referenceDate"
       label="Data de nascimento"
       placeholder="Ex.: 15/10/2000"
       formatter="date"
-      :error-message="birthDateErrorMsg"
+      :error-message="errorMessages.referenceDate"
       required
     />
 
@@ -32,7 +32,7 @@
       label="Telefone"
       placeholder="Apenas números (com DDD)"
       formatter="phone"
-      :error-message="phoneErrorMsg"
+      :error-message="errorMessages.phone"
       required
     />
   </div>
@@ -53,19 +53,21 @@ const model = defineModel({
 const emit = defineEmits(['can-advance']);
 
 const name = ref(model.value['step-pf']?.name || '');
-const cpf = ref(model.value['step-pf']?.cpf || '');
-const birthDate = ref(model.value['step-pf']?.birthDate || '');
+const identifier = ref(model.value['step-pf']?.identifier || '');
+const referenceDate = ref(model.value['step-pf']?.referenceDate || '');
 const phone = ref(model.value['step-pf']?.phone || '');
 
-const nameErrorMsg = ref('');
-const cpfErrorMsg = ref('');
-const birthDateErrorMsg = ref('');
-const phoneErrorMsg = ref('');
+const errorMessages = ref({
+  name: '',
+  identifier: '',
+  referenceDate: '',
+  phone: '',
+});
 
 const isStepValid = computed(() => {
   return name.value.length > 3
-    && validateCpf(cpf.value)
-    && validateDate(birthDate.value)
+    && validateCpf(identifier.value)
+    && validateDate(referenceDate.value)
     && validatePhone(phone.value);
 });
 
@@ -77,28 +79,28 @@ onMounted(() => {
 
 watchEffect(() => {
   if (name.value?.length) {
-    nameErrorMsg.value = name.value.length < 3 ? 'Nome inválido' : '';
-  } else nameErrorMsg.value = '';
+    errorMessages.value.name = name.value.length < 3 ? 'Nome inválido' : '';
+  } else errorMessages.value.name = '';
 
-  if (cpf.value?.length) {
-    cpfErrorMsg.value = validateCpf(cpf.value) ? '' : 'CPF inválido';
-  } else cpfErrorMsg.value = '';
+  if (identifier.value?.length) {
+    errorMessages.value.identifier = validateCpf(identifier.value) ? '' : 'CPF inválido';
+  } else errorMessages.value.identifier = '';
 
-  if (birthDate.value?.length) {
-    birthDateErrorMsg.value = validateDate(birthDate.value) ? '' : 'Data inválida';
-  } else birthDateErrorMsg.value = '';
+  if (referenceDate.value?.length) {
+    errorMessages.value.referenceDate = validateDate(referenceDate.value) ? '' : 'Data inválida';
+  } else errorMessages.value.referenceDate = '';
 
   if (phone.value?.length) {
-    phoneErrorMsg.value = validatePhone(phone.value) ? '' : 'Telefone inválido';
-  } else phoneErrorMsg.value = '';
+    errorMessages.value.phone = validatePhone(phone.value) ? '' : 'Telefone inválido';
+  } else errorMessages.value.phone = '';
 });
 
 watchEffect(() => {
   if (!model.value['step-pf']) return;
 
   model.value['step-pf'].name = name.value;
-  model.value['step-pf'].cpf = cpf.value;
-  model.value['step-pf'].birthDate = birthDate.value;
+  model.value['step-pf'].identifier = identifier.value;
+  model.value['step-pf'].referenceDate = referenceDate.value;
   model.value['step-pf'].phone = phone.value;
 });
 

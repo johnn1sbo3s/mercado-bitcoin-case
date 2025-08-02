@@ -57,7 +57,6 @@ onMounted(() => {
   }
 });
 
-
 watchEffect(() => {
   if (email.value?.length) {
     emailErrorMsg.value = validateEmail ? 'Endereço de e-mail inválido' : '';
