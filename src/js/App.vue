@@ -53,6 +53,7 @@ import StepOne from './features/components/StepOne.vue';
 import StepPf from './features/components/StepPf.vue';
 import StepPj from './features/components/StepPj.vue';
 import StepThree from './features/components/StepThree.vue';
+import StepFour from './features/components/StepFour.vue';
 import FormButton from './core/components/FormButton.vue';
 
 const form = ref({});
@@ -87,6 +88,10 @@ const steps = computed(() => {
     {
       title: 'Senha de acesso',
       component: StepThree,
+    },
+    {
+      title: 'Revise suas informações',
+      component: StepFour,
     }
   ];
 });
