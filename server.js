@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 const app = express();
 
@@ -8,13 +9,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.join(__dirname, 'dist');
 
+app.use(cors());
+app.use(express.json());
+
 app.get('/registration', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.post('/registration', (req, res) => {
-  console.log('Dados recebidos:', req.body);
-  res.sendFile(path.join(distPath, 'index.html'));
+  if (Object.values(req.body).some(value => value === '')) {
+    res.status(400).send('Há campos vazios.');
+  }
+
+  res.status(201).send({ message: 'Cadastro realizado com sucesso.' });
 });
 
 app.get('/', (req, res) => {
