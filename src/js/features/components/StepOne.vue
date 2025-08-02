@@ -12,7 +12,6 @@
     <RadioButton
       v-model="data.accountType"
       :options="accountOptions"
-      @change="handleOptionChange"
     />
   </div>
 </template>
@@ -82,11 +81,6 @@ watchEffect(() => {
   model.value['step-one'].email = data.value.email.trim();
   model.value['step-one'].accountType = data.value.accountType;
 });
-
-function handleOptionChange(selectedOption) {
-  data.value.accountType = selectedOption;
-}
-
 </script>
 
 <style lang="scss" scoped>

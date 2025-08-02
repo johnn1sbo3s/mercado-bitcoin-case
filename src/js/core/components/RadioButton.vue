@@ -2,17 +2,21 @@
   <div class="radio-button">
     <div
       v-for="option in options"
-      :key="option"
+      :key="option.id"
       class="radio-button__item"
       @click="handleClick(option.id)"
     >
       <input
+        :id="`radio-${option.id}`"
+        v-model="model"
         type="radio"
         :value="option.id"
-        :checked="model === option.id"
+        @change="handleChange"
       >
-
-      <label class="radio-button__label">
+      <label
+        :for="`radio-${option.id}`"
+        class="radio-button__label"
+      >
         {{ option.label }}
       </label>
     </div>
@@ -35,6 +39,10 @@ defineProps({
 
 function handleClick(value) {
   model.value = value;
+}
+
+function handleChange(event) {
+  model.value = event.target.value;
 }
 
 </script>
