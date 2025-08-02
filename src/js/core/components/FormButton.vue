@@ -62,6 +62,11 @@ function handleClick() {
     background: var(--color-primary);
     color: white;
 
+    &:hover {
+      background: var(--color-primary-dark);
+      color: white;
+    }
+
     &--secondary {
       @extend .form-button;
       background: white;
