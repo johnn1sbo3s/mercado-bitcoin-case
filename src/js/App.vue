@@ -30,13 +30,12 @@
         />
 
         <FormButton
-          text="Avançar"
+          :text="advanceButtonText"
           :disabled="!canAdvance"
           @click="handleAdvanceClick"
           @disabled-click="handleDisabledClick"
         />
       </div>
-      {{ canAdvance }}
       <span
         v-if="showErrorMessage"
         class="register-form__error"
@@ -53,12 +52,17 @@ import { ref, computed } from 'vue';
 import StepOne from './features/components/StepOne.vue';
 import StepPf from './features/components/StepPf.vue';
 import StepPj from './features/components/StepPj.vue';
+import StepThree from './features/components/StepThree.vue';
 import FormButton from './core/components/FormButton.vue';
 
 const form = ref({});
 const currentStep = ref(0);
 const canAdvance = ref(false);
 const showErrorMessage = ref(false);
+
+const advanceButtonText = computed(() => {
+  return currentStep.value === steps.value.length - 1 ? 'Finalizar cadastro' : 'Avançar';
+});
 
 const selectedAccountType = computed(() => {
   if (!form.value['step-one']) return '';
@@ -79,6 +83,10 @@ const steps = computed(() => {
       component: selectedAccountType.value === 'pf'
         ? StepPf
         : StepPj,
+    },
+    {
+      title: 'Senha de acesso',
+      component: StepThree,
     }
   ];
 });
@@ -96,8 +104,12 @@ function handlePreviousClick() {
 }
 
 function handleAdvanceClick() {
+  if (currentStep.value === steps.value.length - 1) {
+    console.log('Finalizar cadastro');
+    return;
+  }
+
   currentStep.value++;
-  canAdvance.value = false;
 }
 
 function handleCanAdvance(value) {
