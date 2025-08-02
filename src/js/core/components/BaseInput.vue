@@ -13,13 +13,54 @@
       </p>
     </div>
 
-    <input
-      v-model="model"
-      class="base-input__field"
-      :placeholder="placeholder"
-      :type="type"
-      :required="required"
+    <div
+      v-if="!showPassword"
+      class="base-input__field-wrapper"
     >
+      <input
+        v-model="model"
+        class="base-input__field"
+        :placeholder="placeholder"
+        :type="type"
+        :required="required"
+      >
+
+      <div
+        v-if="type === 'password'"
+        class="base-input__icon"
+        @click="handleShowPassword"
+      >
+        <img
+          src="/icons/eye-closed.svg"
+          alt="Ícone de olho"
+          width="20"
+        >
+      </div>
+    </div>
+
+    <div
+      v-else
+      class="base-input__field-wrapper"
+    >
+      <input
+        v-model="model"
+        class="base-input__field"
+        :placeholder="placeholder"
+        :required="required"
+      >
+
+      <div
+        v-if="type === 'password'"
+        class="base-input__icon"
+        @click="handleShowPassword"
+      >
+        <img
+          src="/icons/eye-open.svg"
+          alt="Ícone de olho"
+          width="20"
+        >
+      </div>
+    </div>
 
     <div
       v-if="errorMessage"
@@ -31,7 +72,7 @@
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { formatCpf } from '../../utils/formatters/cpf';
 import { formatCnpj } from '../../utils/formatters/cnpj';
 import { formatEmail } from '../../utils/formatters/email';
@@ -70,11 +111,17 @@ const props = defineProps({
   }
 });
 
+const showPassword = ref(false);
+
 watch(model, (newValue) => {
   if (!props.formatter) return;
 
   runValidation(newValue);
 });
+
+function handleShowPassword() {
+  showPassword.value = !showPassword.value;
+}
 
 function runValidation(value) {
   if (!props.formatter) return true;
@@ -130,6 +177,11 @@ function runValidation(value) {
     color: var(--color-error);
   }
 
+  &__field-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
   &__field {
     font-size: 14px;
     width: 100%;
@@ -137,6 +189,13 @@ function runValidation(value) {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
     box-sizing: border-box;
+  }
+
+  &__icon {
+    position: absolute;
+    right: 16px;
+    top: 13px;
+    cursor: pointer;
   }
 
   &__error {
