@@ -74,6 +74,15 @@ watchEffect(() => {
   model.value['step-one'].accountType = accountType.value;
 });
 
+watchEffect(() => {
+  if (accountType.value === 'pf') {
+    delete model.value['step-pj'];
+    return;
+  }
+
+  delete model.value['step-pf'];
+});
+
 function handleOptionChange(selectedOption) {
   accountType.value = selectedOption;
   model.value['step-one'].accountType = selectedOption;
