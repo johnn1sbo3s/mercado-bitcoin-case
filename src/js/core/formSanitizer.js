@@ -2,13 +2,14 @@ export function sanitizeForm(form) {
   const attributes = Object.values(form).reduce((acc, currentStep) => {
     return { ...acc, ...currentStep };
   }, {});
-  console.log({
-    ...attributes,
-    cpf: attributes.identifier.replace(/[^\d]/g, ''),
-  });
 
   return {
-    ...attributes,
-    cpf: attributes.identifier.replace(/[^\d]/g, ''),
-  }
+    name: attributes.name,
+    email: attributes.email,
+    accountType: attributes.accountType,
+    identifier: attributes.identifier.replace(/[^\d]/g, ''),
+    referenceDate: attributes.referenceDate.replace(/[^\d]/g, ''),
+    phone: attributes.phone.replace(/[^\d]/g, ''),
+    password: attributes.password,
+  };
 }
