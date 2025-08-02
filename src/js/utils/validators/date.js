@@ -3,7 +3,7 @@ export function validateDate(date) {
     return false;
   }
 
-  if (date.length !== 10) {
+  if (date.length < 10) {
     return false;
   }
 

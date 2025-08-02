@@ -3,7 +3,7 @@ export function validatePhone(phone) {
     return false;
   }
 
-  if (phone.length !== 11) {
+  if (phone.length < 15) {
     return false;
   }
 
