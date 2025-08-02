@@ -23,6 +23,7 @@
         :placeholder="placeholder"
         :type="type"
         :required="required"
+        :disabled="disabled"
       >
 
       <div
@@ -47,6 +48,7 @@
         class="base-input__field"
         :placeholder="placeholder"
         :required="required"
+        :disabled="disabled"
       >
 
       <div
@@ -98,6 +100,10 @@ const props = defineProps({
     default: 'text'
   },
   required: {
+    type: Boolean,
+    default: false
+  },
+  disabled: {
     type: Boolean,
     default: false
   },
@@ -189,6 +195,11 @@ function runValidation(value) {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
     box-sizing: border-box;
+
+    &:disabled {
+      background: var(--color-secondary);
+      cursor: not-allowed;
+    }
   }
 
   &__icon {
