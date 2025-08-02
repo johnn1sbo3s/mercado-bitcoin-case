@@ -21,7 +21,7 @@
     <BaseInput
       v-model="data.referenceDate"
       placeholder="Ex.: 15/10/2000"
-      formatter="date"
+      type="date"
       :label="selectedAccountType === 'pf' ? 'Data de nascimento' : 'Data de abertura'"
       :error-message="errorMessages.referenceDate"
       required
@@ -43,7 +43,6 @@ import { ref, onMounted, computed, watchEffect } from 'vue';
 import BaseInput from '../../core/components/BaseInput.vue';
 import { validateCpf } from '../../utils/validators/cpf';
 import { validateCnpj } from '../../utils/validators/cnpj';
-import { validateDate } from '../../utils/validators/date';
 import { validatePhone } from '../../utils/validators/phone';
 
 const model = defineModel({
@@ -74,7 +73,6 @@ const selectedAccountType = computed(() => {
 const isStepValid = computed(() => {
   return data.value.name.length > 3
     && (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
-    && validateDate(data.value.referenceDate)
     && validatePhone(data.value.phone);
 });
 
@@ -85,9 +83,9 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (data.value.name?.length) {
-    errorMessages.value.name = data.value.name.length < 3 ? 'Nome inválido' : '';
-  } else errorMessages.value.name = '';
+  errorMessages.value.name = data.value.name?.length && data.value.name.length < 3
+    ? 'Nome inválido'
+    : '';
 
   if (data.value.identifier?.length) {
     errorMessages.value.identifier = (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
@@ -95,13 +93,9 @@ watchEffect(() => {
       : selectedAccountType.value === 'pf' ? 'CPF inválido' : 'CNPJ inválido';
   } else errorMessages.value.identifier = '';
 
-  if (data.value.referenceDate?.length) {
-    errorMessages.value.referenceDate = validateDate(data.value.referenceDate) ? '' : 'Data inválida';
-  } else errorMessages.value.referenceDate = '';
-
-  if (data.value.phone?.length) {
-    errorMessages.value.phone = validatePhone(data.value.phone) ? '' : 'Telefone inválido';
-  } else errorMessages.value.phone = '';
+  errorMessages.value.phone = data.value.phone?.length && !validatePhone(data.value.phone)
+    ? 'Telefone inválido'
+    : '';
 });
 
 watchEffect(() => {

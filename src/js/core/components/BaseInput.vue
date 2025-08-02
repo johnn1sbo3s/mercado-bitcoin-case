@@ -2,7 +2,7 @@
   <div class="base-input">
     <div class="base-input__label">
       <label for="base-input">
-        {{ label || 'Label' }}
+        {{ label }}
       </label>
 
       <p
@@ -13,15 +13,12 @@
       </p>
     </div>
 
-    <div
-      v-if="!showPassword"
-      class="base-input__field-wrapper"
-    >
+    <div class="base-input__field-wrapper">
       <input
         v-model="model"
         class="base-input__field"
         :placeholder="placeholder"
-        :type="type"
+        :type="resolveType"
         :required="required"
         :disabled="disabled"
       >
@@ -32,32 +29,7 @@
         @click="handleShowPassword"
       >
         <img
-          src="/icons/eye-closed.svg"
-          alt="Ícone de olho"
-          width="20"
-        >
-      </div>
-    </div>
-
-    <div
-      v-else
-      class="base-input__field-wrapper"
-    >
-      <input
-        v-model="model"
-        class="base-input__field"
-        :placeholder="placeholder"
-        :required="required"
-        :disabled="disabled"
-      >
-
-      <div
-        v-if="type === 'password'"
-        class="base-input__icon"
-        @click="handleShowPassword"
-      >
-        <img
-          src="/icons/eye-open.svg"
+          :src="showPassword ? '/icons/eye-open.svg' : '/icons/eye-closed.svg'"
           alt="Ícone de olho"
           width="20"
         >
@@ -74,11 +46,10 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { formatCpf } from '../../utils/formatters/cpf';
 import { formatCnpj } from '../../utils/formatters/cnpj';
 import { formatEmail } from '../../utils/formatters/email';
-import { formatDate } from '../../utils/formatters/date';
 import { formatPhone } from '../../utils/formatters/phone';
 
 const model = defineModel({
@@ -89,7 +60,7 @@ const model = defineModel({
 const props = defineProps({
   label: {
     type: String,
-    required: true,
+    default: 'Label',
   },
   placeholder: {
     type: String,
@@ -119,6 +90,12 @@ const props = defineProps({
 
 const showPassword = ref(false);
 
+const resolveType = computed(() => {
+  if (props.type !== 'password') return props.type;
+
+  return showPassword.value ? 'text' : 'password';
+});
+
 watch(model, (newValue) => {
   if (!props.formatter) return;
 
@@ -141,11 +118,6 @@ function runValidation(value) {
   if (props.formatter === 'email') {
     model.value = value.replace(' ', '');
     model.value = formatEmail(model.value);
-    return;
-  }
-
-  if (props.formatter === 'date') {
-    model.value = formatDate(value);
     return;
   }
 

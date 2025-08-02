@@ -30,8 +30,7 @@
 
     <BaseInput
       v-model="data.referenceDate"
-      type="text"
-      formatter="date"
+      type="date"
       placeholder="Ex.: 15/10/2000"
       :label="selectedAccountType === 'pf' ? 'Data de nascimento' : 'Data de abertura'"
       :error-message="errorMessages.referenceDate"
@@ -67,7 +66,6 @@ import { validateEmail } from '../../utils/validators/email';
 import { validateCpf } from '../../utils/validators/cpf';
 import { validateCnpj } from '../../utils/validators/cnpj';
 import { validatePhone } from '../../utils/validators/phone';
-import { validateDate } from '../../utils/validators/date';
 
 const model = defineModel({
   type: Object,
@@ -102,7 +100,6 @@ const isStepValid = computed(() => {
   return validateEmail(data.value.email)
     && data.value.name.length > 3
     && (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
-    && validateDate(data.value.referenceDate)
     && validatePhone(data.value.phone)
     && data.value.password.length >= 8;
 });
@@ -121,10 +118,6 @@ watchEffect(() => {
       ? ''
       : selectedAccountType.value === 'pf' ? 'CPF inválido' : 'CNPJ inválido';
   } else errorMessages.value.identifier = '';
-
-  if (data.value.referenceDate?.length) {
-    errorMessages.value.referenceDate = validateDate(data.value.referenceDate) ? '' : 'Data inválida';
-  } else errorMessages.value.referenceDate = '';
 
   if (data.value.phone?.length) {
     errorMessages.value.phone = validatePhone(data.value.phone) ? '' : 'Telefone inválido';

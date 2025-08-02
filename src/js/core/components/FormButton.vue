@@ -2,7 +2,7 @@
   <button
     class="form-button__content"
     :class="computedClass"
-    @click="handleClick"
+    @click.prevent="handleClick"
   >
     {{ text }}
   </button>

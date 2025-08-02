@@ -1,23 +1,23 @@
 <template>
   <div class="radio-button">
     <div
-      v-for="option in options"
-      :key="option.id"
+      v-for="({ label, id }, index) in options"
+      :key="index"
       class="radio-button__item"
-      @click="handleClick(option.id)"
+      @click="handleClick(id)"
     >
       <input
-        :id="`radio-${option.id}`"
+        :id="`radio-${id}`"
         v-model="model"
         type="radio"
-        :value="option.id"
+        :value="id"
         @change="handleChange"
       >
       <label
-        :for="`radio-${option.id}`"
+        :for="`radio-${id}`"
         class="radio-button__label"
       >
-        {{ option.label }}
+        {{ label }}
       </label>
     </div>
   </div>
