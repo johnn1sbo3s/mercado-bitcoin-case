@@ -103,13 +103,6 @@ const isStepValid = computed(() => {
     && password.value.length >= 8;
 });
 
-onMounted(() => {
-  if (!model.value['step-four']) {
-    model.value['step-four'] = {};
-    return;
-  }
-});
-
 watchEffect(() => {
   if (email.value?.length) {
     errorMessages.value.email = validateEmail(email.value) ? '' : 'Endereço de e-mail inválido';
@@ -139,8 +132,6 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (!model.value['step-four']) return;
-
   model.value['step-one'].email = email.value;
   model.value[stepTwoKey.value].name = name.value;
   model.value[stepTwoKey.value].identifier = identifier.value;
