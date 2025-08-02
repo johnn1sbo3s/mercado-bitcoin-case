@@ -33,6 +33,7 @@
 <script setup>
 import { watch } from 'vue';
 import { formatCpf } from '../../utils/formatters/cpf';
+import { formatCnpj } from '../../utils/formatters/cnpj';
 import { formatEmail } from '../../utils/formatters/email';
 import { formatDate } from '../../utils/formatters/date';
 import { formatPhone } from '../../utils/formatters/phone';
@@ -97,6 +98,11 @@ function runValidation(value) {
 
   if (props.formatter === 'phone') {
     model.value = formatPhone(value);
+    return;
+  }
+
+  if (props.formatter === 'cnpj') {
+    model.value = formatCnpj(value);
     return;
   }
 }

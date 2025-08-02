@@ -8,10 +8,10 @@
           {{ currentStep + 1 }}
         </p>
 
-        <p>de 4</p>
+        <p>de {{ steps.length }}</p>
       </div>
 
-      <h2>Seja bem vindo(a)</h2>
+      <h2>{{ steps[currentStep].title }}</h2>
 
       <div class="register-form__step-content">
         <component
@@ -36,7 +36,7 @@
           @disabled-click="handleDisabledClick"
         />
       </div>
-
+      {{ canAdvance }}
       <span
         v-if="showErrorMessage"
         class="register-form__error"
@@ -49,9 +49,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import StepOne from './features/components/StepOne.vue';
 import StepPf from './features/components/StepPf.vue';
+import StepPj from './features/components/StepPj.vue';
 import FormButton from './core/components/FormButton.vue';
 
 const form = ref({});
@@ -59,16 +60,28 @@ const currentStep = ref(0);
 const canAdvance = ref(false);
 const showErrorMessage = ref(false);
 
-const steps = [
-  {
-    title: 'Seja bem vindo(a)',
-    component: StepOne,
-  },
-  {
-    title: 'Step Two',
-    component: StepPf,
-  }
-];
+const selectedAccountType = computed(() => {
+  if (!form.value['step-one']) return '';
+
+  return form.value['step-one'].accountType;
+});
+
+const steps = computed(() => {
+  return [
+    {
+      title: 'Seja bem vindo(a)',
+      component: StepOne,
+    },
+    {
+      title: selectedAccountType.value === 'pf'
+        ? 'Pessoa Física'
+        : 'Pessoa Jurídica',
+      component: selectedAccountType.value === 'pf'
+        ? StepPf
+        : StepPj,
+    }
+  ];
+});
 
 function handleDisabledClick() {
   showErrorMessage.value = true;
@@ -119,7 +132,7 @@ function handleCanAdvance(value) {
   }
 
   &__step-content {
-    margin: var(--spacing-xl) 0;
+    margin: var(--spacing-lg) 0;
     width: 100%;
     height: 100%;
   }

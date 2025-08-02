@@ -1,5 +1,5 @@
 <template>
-  <div class="step-two">
+  <div class="step-pf">
     <BaseInput
       v-model="name"
       label="Nome"
@@ -12,7 +12,6 @@
     <BaseInput
       v-model="cpf"
       label="CPF"
-      type="text"
       placeholder="Apenas números"
       formatter="cpf"
       :error-message="cpfErrorMsg"
@@ -22,7 +21,6 @@
     <BaseInput
       v-model="birthDate"
       label="Data de nascimento"
-      type="text"
       placeholder="Ex.: 15/10/2000"
       formatter="date"
       :error-message="birthDateErrorMsg"
@@ -32,12 +30,12 @@
     <BaseInput
       v-model="phone"
       label="Telefone"
-      type="text"
-      placeholder="Apenas números com DDD"
+      placeholder="Apenas números (com DDD)"
       formatter="phone"
       :error-message="phoneErrorMsg"
       required
     />
+    {{ isStepValid }}
   </div>
 </template>
 
@@ -46,6 +44,7 @@ import { ref, onMounted, computed, watchEffect } from 'vue';
 import BaseInput from '../../core/components/BaseInput.vue';
 import { validateCpf } from '../../utils/validators/cpf';
 import { validateDate } from '../../utils/validators/date';
+import { validatePhone } from '../../utils/validators/phone';
 
 const model = defineModel({
   type: Object,
@@ -65,10 +64,10 @@ const birthDateErrorMsg = ref('');
 const phoneErrorMsg = ref('');
 
 const isStepValid = computed(() => {
-  return !nameErrorMsg.value.length
-    && !cpfErrorMsg.value.length
-    && !birthDateErrorMsg.value.length
-    && !phoneErrorMsg.value.length;
+  return name.value.length > 3
+    && validateCpf(cpf.value)
+    && validateDate(birthDate.value)
+    && validatePhone(phone.value);
 });
 
 onMounted(() => {
@@ -88,7 +87,7 @@ watchEffect(() => {
     birthDateErrorMsg.value = validateDate(birthDate.value) ? '' : 'Data inválida';
   }
   if (phone.value?.length) {
-    phoneErrorMsg.value = phone.value.length < 11 ? 'Telefone inválido' : '';
+    phoneErrorMsg.value = validatePhone(phone.value) ? '' : 'Telefone inválido';
   }
 });
 
@@ -109,7 +108,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 
-.step-two {
+.step-pf {
   display: flex;
   flex-direction: column;
   gap: 12px;
