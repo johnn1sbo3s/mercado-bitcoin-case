@@ -1,38 +1,27 @@
 <template>
-  <div class="step-four">
-    <BaseInput
-      v-model="data.email"
-      label="Endereço de e-mail"
-      type="text"
-      placeholder="nome@exemplo.com"
-      :error-message="errorMessages.email"
-      required
-    />
-
+  <div class="step-pf">
     <BaseInput
       v-model="data.name"
       type="text"
-      :placeholder="selectedAccountType === 'pf' ? 'Nome completo' : 'Razão social'"
-      :label="selectedAccountType === 'pf' ? 'Nome' : 'Razão social'"
+      :label="selectedAccountType === 'pf' ? 'Nome completo' : 'Razão social'"
+      :placeholder="selectedAccountType === 'pf' ? 'Seu nome completo' : 'Razão social'"
       :error-message="errorMessages.name"
       required
     />
 
     <BaseInput
       v-model="data.identifier"
-      type="text"
-      formatter="cpf"
       placeholder="Apenas números"
       :label="selectedAccountType === 'pf' ? 'CPF' : 'CNPJ'"
+      :formatter="selectedAccountType === 'pf' ? 'cpf' : 'cnpj'"
       :error-message="errorMessages.identifier"
       required
     />
 
     <BaseInput
       v-model="data.referenceDate"
-      type="text"
-      formatter="date"
       placeholder="Ex.: 15/10/2000"
+      formatter="date"
       :label="selectedAccountType === 'pf' ? 'Data de nascimento' : 'Data de abertura'"
       :error-message="errorMessages.referenceDate"
       required
@@ -40,34 +29,22 @@
 
     <BaseInput
       v-model="data.phone"
-      type="text"
-      formatter="phone"
-      placeholder="Apenas números (com DDD)"
       label="Telefone"
+      placeholder="Apenas números (com DDD)"
+      formatter="phone"
       :error-message="errorMessages.phone"
       required
-    />
-
-    <BaseInput
-      v-model="data.password"
-      label="Sua senha"
-      type="password"
-      placeholder="Mínimo de 8 caracteres"
-      :error-message="errorMessages.password"
-      required
-      disabled
     />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
+import { ref, onMounted, computed, watchEffect } from 'vue';
 import BaseInput from '../../core/components/BaseInput.vue';
-import { validateEmail } from '../../utils/validators/email';
 import { validateCpf } from '../../utils/validators/cpf';
 import { validateCnpj } from '../../utils/validators/cnpj';
-import { validatePhone } from '../../utils/validators/phone';
 import { validateDate } from '../../utils/validators/date';
+import { validatePhone } from '../../utils/validators/phone';
 
 const model = defineModel({
   type: Object,
@@ -76,13 +53,7 @@ const model = defineModel({
 
 const emit = defineEmits(['can-advance']);
 
-const selectedAccountType = computed(() => {
-  return model.value['step-one']?.accountType;
-});
-
 const data = ref({
-  email: model.value['step-one']?.email || '',
-  password: model.value['step-three']?.password || '',
   name: model.value['step-two']?.name || '',
   identifier: model.value['step-two']?.identifier || '',
   referenceDate: model.value['step-two']?.referenceDate || '',
@@ -90,28 +61,30 @@ const data = ref({
 })
 
 const errorMessages = ref({
-  email: '',
-  password: '',
   name: '',
   identifier: '',
   referenceDate: '',
   phone: '',
 });
 
+const selectedAccountType = computed(() => {
+  return model.value['step-one']?.accountType;
+});
+
 const isStepValid = computed(() => {
-  return validateEmail(data.value.email)
-    && data.value.name.length > 3
+  return data.value.name.length > 3
     && (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
     && validateDate(data.value.referenceDate)
-    && validatePhone(data.value.phone)
-    && data.value.password.length >= 8;
+    && validatePhone(data.value.phone);
+});
+
+onMounted(() => {
+  if (!model.value['step-two']) {
+    model.value['step-two'] = {};
+  }
 });
 
 watchEffect(() => {
-  if (data.value.email?.length) {
-    errorMessages.value.email = validateEmail(data.value.email) ? '' : 'Endereço de e-mail inválido';
-  } else errorMessages.value.email = '';
-
   if (data.value.name?.length) {
     errorMessages.value.name = data.value.name.length < 3 ? 'Nome inválido' : '';
   } else errorMessages.value.name = '';
@@ -132,7 +105,10 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  model.value['step-one'].email = data.value.email;
+  if (!model.value['step-two']) return;
+
+  if (!data.value) return;
+
   model.value['step-two'].name = data.value.name;
   model.value['step-two'].identifier = data.value.identifier;
   model.value['step-two'].referenceDate = data.value.referenceDate;
@@ -147,7 +123,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 
-.step-four {
+.step-pf {
   display: flex;
   flex-direction: column;
   gap: 12px;

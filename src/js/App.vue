@@ -50,8 +50,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import StepOne from './features/components/StepOne.vue';
-import StepPf from './features/components/StepPf.vue';
-import StepPj from './features/components/StepPj.vue';
+import StepTwo from './features/components/StepTwo.vue';
 import StepThree from './features/components/StepThree.vue';
 import StepFour from './features/components/StepFour.vue';
 import FormButton from './core/components/FormButton.vue';
@@ -81,9 +80,7 @@ const steps = computed(() => {
       title: selectedAccountType.value === 'pf'
         ? 'Pessoa Física'
         : 'Pessoa Jurídica',
-      component: selectedAccountType.value === 'pf'
-        ? StepPf
-        : StepPj,
+      component: StepTwo,
     },
     {
       title: 'Senha de acesso',
@@ -109,6 +106,8 @@ function handlePreviousClick() {
 }
 
 function handleAdvanceClick() {
+  showErrorMessage.value = false;
+
   if (currentStep.value === steps.value.length - 1) {
     console.log('Finalizar cadastro');
     return;
