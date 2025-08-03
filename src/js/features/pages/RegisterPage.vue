@@ -78,8 +78,8 @@ const form = ref({});
 const currentStep = ref(0);
 const canAdvance = ref(false);
 const showErrorMessage = ref(false);
-const showToastAlert = ref(true);
-const toastAlertType = ref('error');
+const showToastAlert = ref(false);
+const toastAlertType = ref('');
 
 const advanceButtonText = computed(() => {
   return currentStep.value === steps.value.length - 1 ? 'Cadastrar' : 'Continuar';
