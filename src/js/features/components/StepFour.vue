@@ -61,11 +61,11 @@
 
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import BaseInput from '../../core/components/BaseInput.vue';
-import { validateEmail } from '../../utils/validators/email';
-import { validateCpf } from '../../utils/validators/cpf';
-import { validateCnpj } from '../../utils/validators/cnpj';
-import { validatePhone } from '../../utils/validators/phone';
+import BaseInput from '@/js/core/components/BaseInput.vue';
+import { validateEmail } from '@/js/utils/validators/email';
+import { validateCpf } from '@/js/utils/validators/cpf';
+import { validateCnpj } from '@/js/utils/validators/cnpj';
+import { validatePhone } from '@/js/utils/validators/phone';
 
 const model = defineModel({
   type: Object,
@@ -105,13 +105,13 @@ const isStepValid = computed(() => {
 });
 
 watchEffect(() => {
-  if (data.value.email?.length) {
-    errorMessages.value.email = validateEmail(data.value.email) ? '' : 'Endereço de e-mail inválido';
-  } else errorMessages.value.email = '';
+  errorMessages.value.email = data.value.email?.length && !validateEmail(data.value.email)
+    ? 'Endereço de e-mail inválido'
+    : '';
 
-  if (data.value.name?.length) {
-    errorMessages.value.name = data.value.name.length < 3 ? 'Nome inválido' : '';
-  } else errorMessages.value.name = '';
+  errorMessages.value.name = data.value.name?.length && data.value.name.length < 3
+    ? 'Nome inválido'
+    : '';
 
   if (data.value.identifier?.length) {
     errorMessages.value.identifier = (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
@@ -119,9 +119,9 @@ watchEffect(() => {
       : selectedAccountType.value === 'pf' ? 'CPF inválido' : 'CNPJ inválido';
   } else errorMessages.value.identifier = '';
 
-  if (data.value.phone?.length) {
-    errorMessages.value.phone = validatePhone(data.value.phone) ? '' : 'Telefone inválido';
-  } else errorMessages.value.phone = '';
+  errorMessages.value.phone = data.value.phone?.length && !validatePhone(data.value.phone)
+    ? 'Telefone inválido'
+    : '';
 });
 
 watchEffect(() => {

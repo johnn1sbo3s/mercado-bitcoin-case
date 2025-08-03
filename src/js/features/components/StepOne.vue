@@ -6,6 +6,7 @@
       type="email"
       placeholder="nome@exemplo.com"
       formatter="email"
+      :error-message="emailErrorMsg"
       required
     />
 
@@ -18,9 +19,9 @@
 
 <script setup>
 import { ref, watch, watchEffect, computed, onMounted } from 'vue';
-import BaseInput from '../../core/components/BaseInput.vue';
-import RadioButton from '../../core/components/RadioButton.vue';
-import { validateEmail } from '../../utils/validators/email';
+import BaseInput from '@/js/core/components/BaseInput.vue';
+import RadioButton from '@/js/core/components/RadioButton.vue';
+import { validateEmail } from '@/js/utils/validators/email';
 
 const model = defineModel({
   type: Object,
@@ -66,9 +67,9 @@ watch(() => data.value.accountType, (newValue, oldValue) => {
 });
 
 watchEffect(() => {
-  if (data.value.email?.length) {
-    emailErrorMsg.value = validateEmail ? 'Endereço de e-mail inválido' : '';
-  } else emailErrorMsg.value = '';
+  emailErrorMsg.value = data.value.email?.length && !validateEmail(data.value.email)
+    ? 'Endereço de e-mail inválido'
+    : '';
 });
 
 watchEffect(() => {

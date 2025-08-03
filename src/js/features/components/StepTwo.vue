@@ -40,10 +40,11 @@
 
 <script setup>
 import { ref, onMounted, computed, watchEffect } from 'vue';
-import BaseInput from '../../core/components/BaseInput.vue';
-import { validateCpf } from '../../utils/validators/cpf';
-import { validateCnpj } from '../../utils/validators/cnpj';
-import { validatePhone } from '../../utils/validators/phone';
+import BaseInput from '@/js/core/components/BaseInput.vue';
+import { validateCpf } from '@/js/utils/validators/cpf';
+import { validateCnpj } from '@/js/utils/validators/cnpj';
+import { validatePhone } from '@/js/utils/validators/phone';
+import { validateDate } from '@/js/utils/validators/date';
 
 const model = defineModel({
   type: Object,
@@ -92,6 +93,10 @@ watchEffect(() => {
       ? ''
       : selectedAccountType.value === 'pf' ? 'CPF inválido' : 'CNPJ inválido';
   } else errorMessages.value.identifier = '';
+
+  errorMessages.value.referenceDate = data.value.referenceDate?.length && !validateDate(data.value.referenceDate)
+    ? 'Data inválida'
+    : '';
 
   errorMessages.value.phone = data.value.phone?.length && !validatePhone(data.value.phone)
     ? 'Telefone inválido'

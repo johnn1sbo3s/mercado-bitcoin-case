@@ -1,20 +1,20 @@
 <template>
   <div class="step-three">
     <BaseInput
-      v-model="password"
+      v-model="data.password"
       label="Sua senha"
       type="password"
       placeholder="Mínimo de 8 caracteres"
-      :error-message="passwordErrorMsg"
+      :error-message="errorMessages.password"
       required
     />
 
     <BaseInput
-      v-model="passwordConfirmation"
+      v-model="data.passwordConfirmation"
       label="Confirme sua senha"
       type="password"
       placeholder="Informe a senha novamente"
-      :error-message="passwordConfirmationErrorMsg"
+      :error-message="errorMessages.passwordConfirmation"
       required
     />
   </div>
@@ -22,7 +22,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watchEffect } from 'vue';
-import BaseInput from '../../core/components/BaseInput.vue';
+import BaseInput from '@/js/core/components/BaseInput.vue';
 
 const model = defineModel({
   type: Object,
@@ -31,15 +31,19 @@ const model = defineModel({
 
 const emit = defineEmits(['can-advance']);
 
-const password = ref(model.value['step-three']?.password || '');
-const passwordConfirmation = ref(model.value['step-three']?.passwordConfirmation || '');
+const data = ref({
+  password: model.value['step-three']?.password || '',
+  passwordConfirmation: model.value['step-three']?.passwordConfirmation || '',
+});
 
-const passwordErrorMsg = ref('');
-const passwordConfirmationErrorMsg = ref('');
+const errorMessages = ref({
+  password: '',
+  passwordConfirmation: '',
+});
 
 const isStepValid = computed(() => {
-  return password.value.length >= 8
-    && passwordConfirmation.value === password.value;
+  return data.value.password.length > 7
+    && data.value.password === data.value.passwordConfirmation;
 });
 
 onMounted(() => {
@@ -49,20 +53,20 @@ onMounted(() => {
 });
 
 watchEffect(() => {
-  if (password.value?.length) {
-    passwordErrorMsg.value = password.value.length < 8 ? 'A senha deve ter no mínimo 8 caracteres' : '';
-  } else passwordErrorMsg.value = '';
+  errorMessages.value.password = data.value.password?.length && data.value.password.length < 8
+    ? 'A senha deve ter no mínimo 8 caracteres'
+    : '';
 
-  if (passwordConfirmation.value?.length) {
-    passwordConfirmationErrorMsg.value = passwordConfirmation.value !== password.value ? 'As senhas não coincidem' : '';
-  } else passwordConfirmationErrorMsg.value = '';
+  errorMessages.value.passwordConfirmation = data.value.passwordConfirmation?.length && data.value.passwordConfirmation !== data.value.password
+    ? 'As senhas não coincidem'
+    : '';
 });
 
 watchEffect(() => {
   if (!model.value['step-three']) return;
 
-  model.value['step-three'].password = password.value;
-  model.value['step-three'].passwordConfirmation = passwordConfirmation.value;
+  model.value['step-three'].password = data.value.password;
+  model.value['step-three'].passwordConfirmation = data.value.passwordConfirmation;
 });
 
 watchEffect(() => {

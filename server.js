@@ -11,6 +11,7 @@ const distPath = path.join(__dirname, 'dist');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(distPath, { index: false }));
 
 app.get('/registration', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
@@ -18,13 +19,12 @@ app.get('/registration', (req, res) => {
 
 app.post('/registration', (req, res) => {
   if (Object.values(req.body).some(value => value === '')) {
-    res.status(400).send('Há campos vazios.');
+    return res.status(400).json({ message: 'Há campos vazios.' });
   }
-
-  res.status(201).send({ message: 'Cadastro realizado com sucesso.' });
+  res.status(201).json({ message: 'Cadastro realizado com sucesso.' });
 });
 
-app.get('/', (req, res) => {
+app.use((req, res) => {
   res.status(404).send('Not found');
 });
 
