@@ -4,12 +4,12 @@ export function sanitizeForm(form) {
   }, {});
 
   return {
-    name: attributes.name,
-    email: attributes.email,
+    name: attributes.name.trim(),
+    email: attributes.email.trim(),
     accountType: attributes.accountType,
     identifier: attributes.identifier.replace(/[^\d]/g, ''),
     referenceDate: attributes.referenceDate.replace(/[^\d]/g, ''),
     phone: attributes.phone.replace(/[^\d]/g, ''),
-    password: attributes.password,
+    password: attributes.password.trim(),
   };
 }
