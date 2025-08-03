@@ -17,9 +17,12 @@
 
   /* Cores de estado */
   --color-error: #ff4444;
-  --color-success: #00c851;
-  --color-warning: #ffbb33;
-  --color-info: #33b5e5;
+  --color-success: #20b434;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   /* Espaçamentos */
   --spacing-xs: 4px;
@@ -68,7 +71,6 @@ p {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  color: var(--color-text-secondary);
 }
 
 @media (max-width: 768px) {
