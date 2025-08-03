@@ -4,7 +4,7 @@
     :class="computedClass"
     @click.prevent="handleClick"
   >
-    {{ text }}
+    {{ loading ? 'Carregando...' : text }}
   </button>
 </template>
 
@@ -23,6 +23,10 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -30,7 +34,7 @@ const emit = defineEmits(['click', 'disabled-click']);
 
 const computedClass = computed(() => {
   if (props.secondary) return 'form-button__content--secondary';
-  if (props.disabled) return 'form-button__content--disabled';
+  if (props.disabled || props.loading) return 'form-button__content--disabled';
 
   return '';
 });
