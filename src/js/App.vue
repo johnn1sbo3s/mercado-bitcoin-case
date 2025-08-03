@@ -1,8 +1,8 @@
 <template>
-  <RegisterPage />
+  <RegistrationPage />
 </template>
 
 <script setup>
-import RegisterPage from '@/js/features/registration/pages/RegisterPage.vue';
+import RegistrationPage from '@/js/features/registration/pages/RegistrationPage.vue';
 
 </script>
