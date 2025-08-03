@@ -80,7 +80,8 @@ const props = defineProps({
   },
   formatter: {
     type: String,
-    default: ''
+    default: '',
+    validator: (value) => ['cpf', 'cnpj', 'email', 'phone'].includes(value),
   },
   errorMessage: {
     type: String,
