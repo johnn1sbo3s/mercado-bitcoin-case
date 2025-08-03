@@ -21,8 +21,8 @@
     <BaseInput
       v-model="data.identifier"
       type="text"
-      formatter="cpf"
       placeholder="Apenas números"
+      :formatter="selectedAccountType === 'pf' ? 'cpf' : 'cnpj'"
       :label="selectedAccountType === 'pf' ? 'CPF' : 'CNPJ'"
       :error-message="errorMessages.identifier"
       required
