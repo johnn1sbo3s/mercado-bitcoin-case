@@ -60,13 +60,13 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import StepOne from '@/js/features/components/StepOne.vue';
-import StepTwo from '@/js/features/components/StepTwo.vue';
-import StepThree from '@/js/features/components/StepThree.vue';
-import StepFour from '@/js/features/components/StepFour.vue';
+import StepOne from '@/js/features/registration/components/StepOne.vue';
+import StepTwo from '@/js/features/registration/components/StepTwo.vue';
+import StepThree from '@/js/features/registration/components/StepThree.vue';
+import StepFour from '@/js/features/registration/components/StepFour.vue';
 import FormButton from '@/js/core/components/FormButton.vue';
 import ToastAlert from '@/js/core/components/ToastAlert.vue';
-import { sanitizeForm } from '@/js/core/sanitizers/formSanitizer';
+import { sanitizeForm } from '@/js/features/registration/sanitizers/formSanitizer';
 import { useSubmit } from '@/js/utils/composables/useSubmit';
 
 const {

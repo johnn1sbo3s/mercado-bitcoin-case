@@ -3,6 +3,6 @@
 </template>
 
 <script setup>
-import RegisterPage from '@/js/features/pages/RegisterPage.vue';
+import RegisterPage from '@/js/features/registration/pages/RegisterPage.vue';
 
 </script>
