@@ -5,11 +5,11 @@
 
 1. Clone este repositório na sua máquina:
    ```bash
-   git clone <url-do-repo>
+   git clone https://github.com/johnn1sbo3s/mercado-bitcoin-case
    ```
 2. Entre no diretório do projeto:
    ```bash
-   cd <nome-do-diretório>
+   cd mercado-bitcoin-case
    ```
 3. Instale as dependências:
    ```bash
