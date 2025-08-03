@@ -61,11 +61,11 @@
 
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
-import BaseInput from '@/js/core/components/BaseInput.vue';
-import { validateEmail } from '@/js/utils/validators/email';
-import { validateCpf } from '@/js/utils/validators/cpf';
 import { validateCnpj } from '@/js/utils/validators/cnpj';
+import { validateCpf } from '@/js/utils/validators/cpf';
+import { validateEmail } from '@/js/utils/validators/email';
 import { validatePhone } from '@/js/utils/validators/phone';
+import BaseInput from '@/js/core/components/BaseInput.vue';
 
 const model = defineModel({
   type: Object,

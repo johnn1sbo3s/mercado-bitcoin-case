@@ -40,11 +40,11 @@
 
 <script setup>
 import { ref, onMounted, computed, watchEffect } from 'vue';
-import BaseInput from '@/js/core/components/BaseInput.vue';
-import { validateCpf } from '@/js/utils/validators/cpf';
 import { validateCnpj } from '@/js/utils/validators/cnpj';
-import { validatePhone } from '@/js/utils/validators/phone';
+import { validateCpf } from '@/js/utils/validators/cpf';
 import { validateDate } from '@/js/utils/validators/date';
+import { validatePhone } from '@/js/utils/validators/phone';
+import BaseInput from '@/js/core/components/BaseInput.vue';
 
 const model = defineModel({
   type: Object,

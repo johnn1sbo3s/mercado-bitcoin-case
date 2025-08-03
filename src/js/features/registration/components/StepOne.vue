@@ -19,9 +19,9 @@
 
 <script setup>
 import { ref, watch, watchEffect, computed, onMounted } from 'vue';
+import { validateEmail } from '@/js/utils/validators/email';
 import BaseInput from '@/js/core/components/BaseInput.vue';
 import RadioButton from '@/js/core/components/RadioButton.vue';
-import { validateEmail } from '@/js/utils/validators/email';
 
 const model = defineModel({
   type: Object,
