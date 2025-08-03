@@ -114,6 +114,14 @@ const steps = computed(() => {
   ];
 });
 
+function clearForm() {
+  for (const stepKey in form.value) {
+    if (typeof form.value[stepKey] === 'object') {
+      delete form.value[stepKey];
+    }
+  }
+}
+
 function handleDisabledClick() {
   showErrorMessage.value = true;
 
@@ -144,7 +152,7 @@ function submitForm(form) {
     .then(() => {
       toastAlertType.value = 'success';
       showToastAlert.value = true;
-      form.value = {};
+      clearForm();
       currentStep.value = 0;
     })
     .catch(() => {
