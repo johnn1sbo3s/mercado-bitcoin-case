@@ -1,11 +1,5 @@
 export function validatePhone(phone) {
-  if (!phone) {
-    return false;
-  }
+  const regex = /^\([1-9]{2}\) [0-9]{4,5}-[0-9]{4}$/;
 
-  if (phone.length < 15) {
-    return false;
-  }
-
-  return true;
+  return regex.test(phone);
 }
