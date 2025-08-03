@@ -1,41 +1,76 @@
-# mercado-bitcoin-case
 
-This template should help get you started developing with Vue 3 in Vite.
+# Desafio Técnico – Formulário Multi-Step (Vue + Express)
 
-## Recommended IDE Setup
+## Como rodar o projeto
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. Clone este repositório na sua máquina:
+   ```bash
+   git clone <url-do-repo>
+   ```
+2. Entre no diretório do projeto:
+   ```bash
+   cd <nome-do-diretório>
+   ```
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+4. Faça o build do frontend:
+   ```bash
+   npm run build
+   ```
+5. Inicie o servidor Express:
+   ```bash
+   node server.js
+   ```
+6. Acesse o projeto em [http://localhost:3000/registration](http://localhost:3000/registration).
 
-## Customize configuration
+---
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Estrutura do Projeto
 
-## Project Setup
+O projeto foi desenvolvido utilizando **Vue** no frontend e **Express** no backend, seguindo uma arquitetura modular (module base architecture). Busquei utilizar ao máximo funções nativas do JavaScript, evitando bibliotecas de terceiros para lógica e manipulação de dados.
 
-```sh
-npm install
+Abaixo, uma representação da estrutura de diretórios:
+
+```
+src/
+  css/
+    main.css
+  js/
+    core/
+      components/
+        BaseInput.vue
+        FormButton.vue
+        RadioButton.vue
+        ToastAlert.vue
+    features/
+      registration/
+        components/
+          StepOne.vue
+          StepTwo.vue
+          StepThree.vue
+          StepFour.vue
+        pages/
+          RegisterPage.vue
+        sanitizers/
+          formSanitizer.js
+    utils/
+      __tests__/
+      composables/
+      formatters/
+      validators/
+  App.vue
+  main.js
+  sass/
 ```
 
-### Compile and Hot-Reload for Development
+### Organização e Lógica
 
-```sh
-npm run dev
-```
+- **RegisterPage.vue**: Wrapper do formulário de cadastro, responsável por coordenar os passos, controlar a navegação, validação, requisições e reset do formulário.
+- **Steps (StepOne.vue, StepTwo.vue, etc.)**: Cada passo do formulário é um componente independente, responsável por sua própria validação e por informar ao componente pai (RegisterPage) se está válido para avançar.
+- **Componentes base**: Criei componentes reutilizáveis como `BaseInput`, `FormButton`, `RadioButton` e `ToastAlert`, centralizando estilos e lógicas comuns de formatação, interação e feedback ao usuário.
+- **Sanitizers, formatters, validators**: Funções utilitárias para sanitização, formatação e validação dos dados do formulário, organizadas em pastas específicas para facilitar manutenção e escalabilidade.
+- **ToastAlert**: Componente de feedback visual para o usuário, exibindo mensagens de sucesso ou erro após as requisições.
 
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+A ideia foi manter o projeto organizado, modular e fácil de escalar, separando responsabilidades e facilitando a manutenção e testes.
