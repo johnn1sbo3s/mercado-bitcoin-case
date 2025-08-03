@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatCnpj } from '../formatters/cnpj';
+import { formatCnpj } from '@/js/utils/formatters/cnpj.js';
 
 describe('formatCnpj', () => {
   it('should return empty string for empty input', () => {

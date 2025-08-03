@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatCpf } from '../formatters/cpf.js';
+import { formatCpf } from '@/js/utils/formatters/cpf.js';
 
 describe('formatCpf', () => {
   it('should return empty string for empty input', () => {
