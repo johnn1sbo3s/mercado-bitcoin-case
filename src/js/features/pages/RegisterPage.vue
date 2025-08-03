@@ -1,5 +1,10 @@
 <template>
   <main class="register-page">
+    <div
+      v-if="submitLoading"
+      class="register-page__overlay"
+    />
+
     <div class="register-page__header">
       <section class="register-page__step-info">
         <p>Etapa</p>
@@ -32,19 +37,25 @@
         <FormButton
           :text="advanceButtonText"
           :disabled="!canAdvance"
+          :loading="submitLoading"
           @click="handleAdvanceClick"
           @disabled-click="handleDisabledClick"
         />
       </section>
-      <span
+
+      <div
         v-if="showErrorMessage"
         class="register-page__error"
       >
-        Preencha o formulário corretamente para avançar
-      </span>
+        Preencha o formulário corretamente para avançar.
+      </div>
+
+      <ToastAlert
+        v-model="showToastAlert"
+        :type="toastAlertType"
+      />
     </div>
   </main>
-  <pre>{{ form }}</pre>
 </template>
 
 <script setup>
@@ -54,16 +65,24 @@ import StepTwo from '@/js/features/components/StepTwo.vue';
 import StepThree from '@/js/features/components/StepThree.vue';
 import StepFour from '@/js/features/components/StepFour.vue';
 import FormButton from '@/js/core/components/FormButton.vue';
-import { sanitizeForm } from '@/js/core/formSanitizer';
+import ToastAlert from '@/js/core/components/ToastAlert.vue';
+import { sanitizeForm } from '@/js/core/sanitizers/formSanitizer';
+import { useSubmit } from '@/js/utils/composables/useSubmit';
 
-const form = ref({
-});
+const {
+  loading: submitLoading,
+  submit
+} = useSubmit('http://localhost:3000/registration');
+
+const form = ref({});
 const currentStep = ref(0);
 const canAdvance = ref(false);
 const showErrorMessage = ref(false);
+const showToastAlert = ref(true);
+const toastAlertType = ref('error');
 
 const advanceButtonText = computed(() => {
-  return currentStep.value === steps.value.length - 1 ? 'Finalizar cadastro' : 'Avançar';
+  return currentStep.value === steps.value.length - 1 ? 'Cadastrar' : 'Continuar';
 });
 
 const selectedAccountType = computed(() => {
@@ -111,11 +130,32 @@ function handleAdvanceClick() {
   showErrorMessage.value = false;
 
   if (currentStep.value === steps.value.length - 1) {
-    sanitizeForm(form.value);
+    const sanitizedForm = sanitizeForm(form.value);
+    submitForm(sanitizedForm);
+
     return;
   }
 
   currentStep.value++;
+}
+
+function submitForm(form) {
+  submit(form)
+    .then(() => {
+      toastAlertType.value = 'success';
+      showToastAlert.value = true;
+      form.value = {};
+      currentStep.value = 0;
+    })
+    .catch(() => {
+      toastAlertType.value = 'error';
+      showToastAlert.value = true;
+    })
+    .finally(() => {
+      setTimeout(() => {
+        showToastAlert.value = false;
+      }, 3000);
+    });
 }
 
 function handleCanAdvance(value) {
@@ -127,11 +167,22 @@ function handleCanAdvance(value) {
 <style lang="scss" scoped>
 
 .register-page {
-  margin-top: 20%;
+  position: relative;
+  margin-top: 100px;
   width: 350px;
   background: white;
   padding: var(--spacing-xxl) var(--spacing-xl);
   border-radius: var(--spacing-md);
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1000;
+  }
 
   &__header {
     display: flex;
@@ -168,7 +219,13 @@ function handleCanAdvance(value) {
     border: 1px solid #ffbbbb;
     border-radius: var(--border-radius-md);
     font-size: 12px;
-    color: #d82b2b;
+    color: var(--color-error);
+  }
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    width: 80%;
   }
 }
 
