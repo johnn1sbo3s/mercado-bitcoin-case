@@ -72,7 +72,7 @@ const selectedAccountType = computed(() => {
 });
 
 const isStepValid = computed(() => {
-  return data.value.name.length > 3
+  return data.value.name.length >= 3
     && (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
     && validatePhone(data.value.phone);
 });

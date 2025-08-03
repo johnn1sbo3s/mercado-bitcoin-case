@@ -98,7 +98,7 @@ const errorMessages = ref({
 
 const isStepValid = computed(() => {
   return validateEmail(data.value.email)
-    && data.value.name.length > 3
+    && data.value.name.length >= 3
     && (selectedAccountType.value === 'pf' ? validateCpf : validateCnpj)(data.value.identifier)
     && validatePhone(data.value.phone)
     && data.value.password.length >= 8;
