@@ -21,6 +21,8 @@ app.post('/registration', (req, res) => {
   if (Object.values(req.body).some(value => value === '')) {
     return res.status(400).json({ message: 'Há campos vazios.' });
   }
+
+  console.log('Campos recebidos: ', req.body);
   res.status(201).json({ message: 'Cadastro realizado com sucesso.' });
 });
 
