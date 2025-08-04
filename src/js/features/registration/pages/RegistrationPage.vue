@@ -72,7 +72,7 @@ import ToastAlert from '@/js/core/components/ToastAlert.vue';
 const {
   loading: submitLoading,
   submit
-} = useSubmit('http://localhost:3000/registration');
+} = useSubmit('/registration');
 
 const form = ref({});
 const currentStep = ref(0);
@@ -116,9 +116,7 @@ const steps = computed(() => {
 
 function clearForm() {
   for (const stepKey in form.value) {
-    if (typeof form.value[stepKey] === 'object') {
-      delete form.value[stepKey];
-    }
+    delete form.value[stepKey];
   }
 }
 
@@ -134,12 +132,12 @@ function handlePreviousClick() {
   currentStep.value--;
 }
 
-function handleAdvanceClick() {
+async function handleAdvanceClick() {
   showErrorMessage.value = false;
 
   if (currentStep.value === steps.value.length - 1) {
     const sanitizedForm = sanitizeForm(form.value);
-    submitForm(sanitizedForm);
+    await submitForm(sanitizedForm);
 
     return;
   }
@@ -147,23 +145,21 @@ function handleAdvanceClick() {
   currentStep.value++;
 }
 
-function submitForm(form) {
-  submit(form)
-    .then(() => {
-      toastAlertType.value = 'success';
-      showToastAlert.value = true;
-      clearForm();
-      currentStep.value = 0;
-    })
-    .catch(() => {
-      toastAlertType.value = 'error';
-      showToastAlert.value = true;
-    })
-    .finally(() => {
-      setTimeout(() => {
-        showToastAlert.value = false;
-      }, 3000);
-    });
+async function submitForm(form) {
+  try {
+    await submit(form);
+    toastAlertType.value = 'success';
+    showToastAlert.value = true;
+    clearForm();
+    currentStep.value = 0;
+  } catch {
+    toastAlertType.value = 'error';
+    showToastAlert.value = true;
+  } finally {
+    setTimeout(() => {
+      showToastAlert.value = false;
+    }, 3000);
+  }
 }
 
 function handleCanAdvance(value) {
