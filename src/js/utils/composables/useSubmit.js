@@ -1,9 +1,11 @@
 import { ref } from 'vue';
 
-export function useSubmit(url) {
+export function useSubmit(uri) {
   const data = ref(null);
   const loading = ref(false);
   const errorMsg = ref('');
+
+  const apiUrlPath = 'http://localhost:3000';
 
   const submit = async (payload) => {
     loading.value = true;
@@ -11,7 +13,7 @@ export function useSubmit(url) {
     data.value = null;
 
     try {
-      const response = await fetch(url, {
+      const response = await fetch(`${apiUrlPath}${uri}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
