@@ -24,6 +24,7 @@ const props = defineProps({
   type: {
     type: String,
     required: true,
+    validator: (value) => ['success', 'error'].includes(value),
   },
 });
 
